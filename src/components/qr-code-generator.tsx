@@ -274,7 +274,7 @@ export function QrCodeGenerator() {
         </Form>
       </div>
 
-      <div className="lg:col-span-2 flex flex-col gap-8">
+      <div className="lg:col-span-2 lg:sticky lg:top-8 flex flex-col gap-8">
         <QrPreview
           data={qrData}
           size={size}

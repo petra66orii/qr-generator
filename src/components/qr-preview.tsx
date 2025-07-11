@@ -50,7 +50,7 @@ export function QrPreview({ data, size, margin, errorCorrection, logoUrl }: QrPr
   } : undefined;
 
   return (
-    <Card className="sticky top-8">
+    <Card>
       <CardHeader>
         <CardTitle>Your QR Code</CardTitle>
         <CardDescription>Preview your generated QR code below.</CardDescription>
