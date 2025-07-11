@@ -71,7 +71,7 @@ export function QrPreview({ data, size, margin, errorCorrection, logoUrl }: QrPr
               fgColor={"#000000"}
               level={errorCorrection}
               includeMargin={true}
-              marginSize={margin}
+              margin={margin}
               imageSettings={imageSettings}
             />
           )}
