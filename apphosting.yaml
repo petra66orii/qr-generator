@@ -5,3 +5,22 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+  # The GOOGLE_API_KEY is needed for the Genkit AI features to work.
+  # Before deploying, create a secret in Google Cloud Secret Manager
+  # and grant the "Secret Manager Secret Accessor" role to your
+  # App Hosting service account.
+  env:
+    - variable: GOOGLE_API_KEY
+      secret: GOOGLE_API_KEY
+
+# Serve all assets from the Next.js public directory.
+# All other requests are handled by the Next.js server.
+headers:
+  - source: /_next/static/**
+    headers:
+      - key: Cache-Control
+        value: public, max-age=31536000, immutable
+  - source: /public/**
+    headers:
+      - key: Cache-Control
+        value: public, max-age=31536000, immutable
