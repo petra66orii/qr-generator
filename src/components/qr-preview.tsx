@@ -54,7 +54,7 @@ export function QrPreview({ data, size, margin, errorCorrection }: QrPreviewProp
                 <p>Please enter data to generate a QR code.</p>
              </div>
           )}
-          {!hasError && (
+          {!hasError && imageUrl && (
              <Image
                 src={imageUrl}
                 alt="Generated QR Code"
