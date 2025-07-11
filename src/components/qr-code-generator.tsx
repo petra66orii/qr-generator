@@ -24,9 +24,12 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { QrPreview } from '@/components/qr-preview';
 import { AiAdvisor } from '@/components/ai-advisor';
-import { Link, FileText, Wifi, Contact, Phone } from 'lucide-react';
+import { getLogo } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import { Link, FileText, Wifi, Contact, Phone, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type QrType = 'url' | 'text' | 'wifi' | 'contact' | 'phone';
@@ -48,6 +51,8 @@ const formSchema = z.object({
   contactPhone: z.string().optional(),
   email: z.string().email({ message: 'Please enter a valid email.' }).optional().or(z.literal('')),
   website: z.string().url({ message: 'Please enter a valid URL.' }).optional().or(z.literal('')),
+  // Logo
+  logoPrompt: z.string().optional(),
 });
 
 export function QrCodeGenerator() {
@@ -55,7 +60,10 @@ export function QrCodeGenerator() {
   const [qrData, setQrData] = useState('https://firebase.google.com');
   const [size, setSize] = useState(300);
   const [margin, setMargin] = useState(1);
-  const [errorCorrection, setErrorCorrection] = useState('Q');
+  const [errorCorrection, setErrorCorrection] = useState<"L" | "M" | "Q" | "H">('Q');
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [isLogoGenerating, startLogoTransition] = useTransition();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,6 +79,7 @@ export function QrCodeGenerator() {
       contactPhone: '',
       email: '',
       website: '',
+      logoPrompt: '',
     },
   });
 
@@ -104,6 +113,30 @@ export function QrCodeGenerator() {
     setQrData(data);
   }, [watchedValues, activeTab, form]);
 
+  const handleLogoGeneration = () => {
+    const prompt = form.getValues('logoPrompt');
+    if (!prompt || prompt.length < 5) {
+        toast({
+            variant: 'destructive',
+            title: 'Invalid Prompt',
+            description: 'Please enter a logo description of at least 5 characters.',
+        });
+        return;
+    }
+    startLogoTransition(async () => {
+      try {
+        const generatedLogo = await getLogo(prompt);
+        setLogoUrl(generatedLogo);
+      } catch (error) {
+        toast({
+            variant: 'destructive',
+            title: 'Logo Generation Failed',
+            description: error instanceof Error ? error.message : 'An unknown error occurred.',
+        });
+      }
+    });
+  }
+
   const TABS: { id: QrType; icon: React.ElementType; label: string }[] = [
     { id: 'url', icon: Link, label: 'URL' },
     { id: 'text', icon: FileText, label: 'Text' },
@@ -131,7 +164,7 @@ export function QrCodeGenerator() {
             </div>
             <div className="space-y-2">
               <Label>Error Correction</Label>
-              <Select value={errorCorrection} onValueChange={setErrorCorrection}>
+              <Select value={errorCorrection} onValueChange={(v) => setErrorCorrection(v as "L" | "M" | "Q" | "H")}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select level" />
                 </SelectTrigger>
@@ -148,7 +181,7 @@ export function QrCodeGenerator() {
         </Card>
 
         <Form {...form}>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as QrType)} className="w-full">
               <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 h-auto">
                 {TABS.map((tab) => (
@@ -245,7 +278,37 @@ export function QrCodeGenerator() {
           size={size}
           margin={margin}
           errorCorrection={errorCorrection}
+          logoUrl={logoUrl}
         />
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <Sparkles className="text-primary" />
+                    Premium: AI Logo
+                </CardTitle>
+                <CardDescription>Generate a custom logo to embed in your QR code.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={(e) => { e.preventDefault(); handleLogoGeneration(); }} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="logoPrompt"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Logo Description</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g., A smiling coffee cup" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit" disabled={isLogoGenerating} className="w-full">
+                        {isLogoGenerating ? 'Generating...' : 'Generate Logo'}
+                    </Button>
+                </form>
+            </CardContent>
+        </Card>
         <AiAdvisor qrData={qrData} />
       </div>
     </div>

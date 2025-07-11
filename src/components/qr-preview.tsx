@@ -1,44 +1,53 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 interface QrPreviewProps {
   data: string;
   size: number;
   margin: number;
-  errorCorrection: string;
+  errorCorrection: 'L' | 'M' | 'Q' | 'H';
+  logoUrl: string | null;
 }
 
-export function QrPreview({ data, size, margin, errorCorrection }: QrPreviewProps) {
-  const [imageUrl, setImageUrl] = useState('');
-  const [downloadUrl, setDownloadUrl] = useState('');
+export function QrPreview({ data, size, margin, errorCorrection, logoUrl }: QrPreviewProps) {
+  const canvasRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
+  
   useEffect(() => {
-    if (data) {
-      setIsLoading(true);
-      setHasError(false);
-      const encodedData = encodeURIComponent(data);
-      const base = 'https://api.qrserver.com/v1/create-qr-code/';
-      const params = `?data=${encodedData}&size=${size}x${size}&ecc=${errorCorrection}&margin=${margin}`;
-      
-      // We use SVG for preview for better quality and PNG for download.
-      setImageUrl(`${base}${params}&format=svg`);
-      setDownloadUrl(`${base}${params}&format=png`);
-    } else {
-      setIsLoading(false);
-      setHasError(true);
-      setImageUrl('');
-      setDownloadUrl('');
+    setIsLoading(true);
+    setHasError(!data);
+    const timer = setTimeout(() => setIsLoading(false), 500); // Simulate loading
+    return () => clearTimeout(timer);
+  }, [data, size, margin, errorCorrection, logoUrl]);
+  
+  const handleDownload = () => {
+    const canvas = canvasRef.current?.querySelector('canvas');
+    if (canvas) {
+      const pngUrl = canvas
+        .toDataURL('image/png')
+        .replace('image/png', 'image/octet-stream');
+      let downloadLink = document.createElement('a');
+      downloadLink.href = pngUrl;
+      downloadLink.download = 'qrickit-code.png';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     }
-  }, [data, size, margin, errorCorrection]);
+  };
+
+  const imageSettings = logoUrl ? {
+    src: logoUrl,
+    height: size * 0.2,
+    width: size * 0.2,
+    excavate: true,
+  } : undefined;
 
   return (
     <Card className="sticky top-8">
@@ -47,38 +56,33 @@ export function QrPreview({ data, size, margin, errorCorrection }: QrPreviewProp
         <CardDescription>Preview your generated QR code below.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-6">
-        <div className="relative w-full max-w-[300px] aspect-square rounded-lg bg-gray-50 p-4 border shadow-inner">
+        <div ref={canvasRef} className="relative w-full max-w-[300px] aspect-square rounded-lg bg-gray-50 p-4 border shadow-inner flex items-center justify-center">
           {isLoading && <Skeleton className="w-full h-full" />}
           {hasError && !isLoading && (
              <div className="flex items-center justify-center w-full h-full text-center text-muted-foreground">
                 <p>Please enter data to generate a QR code.</p>
              </div>
           )}
-          {!hasError && imageUrl && (
-             <Image
-                src={imageUrl}
-                alt="Generated QR Code"
-                width={300}
-                height={300}
-                className={cn('w-full h-auto transition-opacity duration-300', isLoading ? 'opacity-0' : 'opacity-100')}
-                onLoad={() => setIsLoading(false)}
-                onError={() => {
-                  setIsLoading(false);
-                  setHasError(true);
-                }}
-                unoptimized // Necessary for SVGs in next/image
-              />
+          {!hasError && !isLoading && (
+            <QRCodeCanvas
+              value={data}
+              size={Math.min(size, 300)} // Cap size for preview
+              bgColor={"#ffffff"}
+              fgColor={"#000000"}
+              level={errorCorrection}
+              includeMargin={true}
+              marginSize={margin}
+              imageSettings={imageSettings}
+            />
           )}
         </div>
         <Button 
-          asChild 
+          onClick={handleDownload}
           className="w-full"
-          disabled={!downloadUrl || hasError || isLoading}
+          disabled={hasError || isLoading}
         >
-          <a href={downloadUrl} download="qrickit-code.png">
-            <Download className="mr-2 h-4 w-4" />
-            Download PNG
-          </a>
+          <Download className="mr-2 h-4 w-4" />
+          Download PNG
         </Button>
       </CardContent>
     </Card>
