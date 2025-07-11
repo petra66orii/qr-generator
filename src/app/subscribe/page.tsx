@@ -21,6 +21,7 @@ const plans = [
       'Premium Support',
     ],
     isPopular: false,
+    priceId: 'price_monthly', // Example Price ID from a payment provider like Stripe
   },
   {
     name: 'Yearly',
@@ -34,6 +35,7 @@ const plans = [
       'Save 20% vs Monthly',
     ],
     isPopular: true,
+    priceId: 'price_yearly', // Example Price ID from a payment provider like Stripe
   },
 ];
 
@@ -42,20 +44,35 @@ export default function SubscribePage() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<string | null>(null);
 
-  const handleSubscribe = (planName: string) => {
+  const handleSubscribe = async (planName: string) => {
     setIsLoading(planName);
-    // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would handle payment and update user status in your backend.
-      // Here, we'll simulate it by setting a value in localStorage.
-      localStorage.setItem('isSubscribed', 'true');
-      setIsLoading(null);
-      toast({
-        title: 'Subscription Successful!',
-        description: `Welcome to QRickit Premium! You now have access to all features.`,
-      });
-      router.push('/');
-    }, 2000);
+
+    // TODO: Replace this simulation with a real payment provider integration.
+    // 1. Create a server action or API route to handle payment session creation.
+    //    const response = await fetch('/api/create-checkout-session', {
+    //      method: 'POST',
+    //      headers: { 'Content-Type': 'application/json' },
+    //      body: JSON.stringify({ priceId: plan.priceId }),
+    //    });
+    //    const { sessionId } = await response.json();
+    //
+    // 2. Redirect the user to the payment provider's checkout page.
+    //    const stripe = await loadStripe('YOUR_STRIPE_PUBLIC_KEY');
+    //    await stripe.redirectToCheckout({ sessionId });
+
+    // --- Start of Simulation ---
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    // In a real app, a webhook from your payment provider would update the user's
+    // subscription status in your database. Here, we'll simulate it.
+    localStorage.setItem('isSubscribed', 'true');
+    toast({
+      title: 'Subscription Successful!',
+      description: `Welcome to QRickit Premium! You now have access to all features.`,
+    });
+    router.push('/');
+    // --- End of Simulation ---
+
+    setIsLoading(null);
   };
 
   return (
@@ -93,7 +110,7 @@ export default function SubscribePage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button 
+                <Button
                     className="w-full"
                     size="lg"
                     onClick={() => handleSubscribe(plan.name)}
