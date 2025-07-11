@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -33,6 +34,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Link, FileText, Wifi, Contact, Phone, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+
 
 type QrType = 'url' | 'text' | 'wifi' | 'contact' | 'phone';
 
@@ -58,6 +61,7 @@ const formSchema = z.object({
 });
 
 export function QrCodeGenerator() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<QrType>('url');
   const [qrData, setQrData] = useState('https://firebase.google.com');
   const [size, setSize] = useState(300);
@@ -65,7 +69,15 @@ export function QrCodeGenerator() {
   const [errorCorrection, setErrorCorrection] = useState<"L" | "M" | "Q" | "H">('Q');
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [isLogoGenerating, startLogoTransition] = useTransition();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // In a real app, you'd check auth status. We'll use localStorage for simulation.
+    const subscribed = localStorage.getItem('isSubscribed') === 'true';
+    setIsSubscribed(subscribed);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -116,6 +128,10 @@ export function QrCodeGenerator() {
   }, [watchedValues, activeTab, form]);
 
   const handleLogoGeneration = () => {
+    if (!isSubscribed) {
+      setShowUpgradeDialog(true);
+      return;
+    }
     const prompt = form.getValues('logoPrompt');
     if (!prompt || prompt.length < 5) {
         toast({
@@ -148,173 +164,189 @@ export function QrCodeGenerator() {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-      <div className="lg:col-span-3 flex flex-col gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Configuration</CardTitle>
-            <CardDescription>Adjust the appearance of your QR code.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label>Size: {size}px</Label>
-              <Slider value={[size]} onValueChange={(v) => setSize(v[0])} min={50} max={1000} step={10} />
-            </div>
-            <div className="space-y-2">
-              <Label>Margin: {margin} modules</Label>
-              <Slider value={[margin]} onValueChange={(v) => setMargin(v[0])} min={0} max={20} step={1} />
-            </div>
-            <div className="space-y-2">
-              <Label>Error Correction</Label>
-              <Select value={errorCorrection} onValueChange={(v) => setErrorCorrection(v as "L" | "M" | "Q" | "H")}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="L">Low (L)</SelectItem>
-                  <SelectItem value="M">Medium (M)</SelectItem>
-                  <SelectItem value="Q">Quartile (Q)</SelectItem>
-                  <SelectItem value="H">High (H)</SelectItem>
-                </SelectContent>
-              </Select>
-              <p className="text-sm text-muted-foreground">Higher levels can withstand more damage.</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Form {...form}>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as QrType)} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 h-auto">
-                {TABS.map((tab) => (
-                  <TabsTrigger key={tab.id} value={tab.id} className="flex-col sm:flex-row gap-2 py-2">
-                    <tab.icon className="w-4 h-4" />
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-              <Card className="mt-4">
-                <CardContent className="p-6">
-                  <TabsContent value="url" className="mt-0">
-                    <FormField name="url" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Website URL</FormLabel>
-                        <FormControl><Input placeholder="https://example.com" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                  </TabsContent>
-                  <TabsContent value="text" className="mt-0">
-                    <FormField name="text" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Text</FormLabel>
-                        <FormControl><Input placeholder="Enter any text" {...field} /></FormControl>
-                      </FormItem>
-                    )} />
-                  </TabsContent>
-                  <TabsContent value="phone" className="mt-0">
-                     <FormField name="phone" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl>
-                      </FormItem>
-                    )} />
-                  </TabsContent>
-                  <TabsContent value="wifi" className="mt-0 space-y-4">
-                    <FormField name="ssid" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Network Name (SSID)</FormLabel>
-                        <FormControl><Input placeholder="My Wi-Fi Network" {...field} /></FormControl>
-                      </FormItem>
-                    )} />
-                    <FormField name="password" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl><Input type="password" placeholder="Your network password" {...field} /></FormControl>
-                      </FormItem>
-                    )} />
-                    <FormField name="encryption" control={form.control} render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Encryption</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                          <SelectContent>
-                            <SelectItem value="WPA">WPA/WPA2</SelectItem>
-                            <SelectItem value="WEP">WEP</SelectItem>
-                            <SelectItem value="nopass">No Password</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )} />
-                  </TabsContent>
-                  <TabsContent value="contact" className="mt-0 space-y-4">
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <FormField name="firstName" control={form.control} render={({ field }) => (
-                            <FormItem><FormLabel>First Name</FormLabel><FormControl><Input placeholder="John" {...field} /></FormControl></FormItem>
-                        )} />
-                        <FormField name="lastName" control={form.control} render={({ field }) => (
-                            <FormItem><FormLabel>Last Name</FormLabel><FormControl><Input placeholder="Doe" {...field} /></FormControl></FormItem>
-                        )} />
-                    </div>
-                     <FormField name="contactPhone" control={form.control} render={({ field }) => (
-                        <FormItem><FormLabel>Phone</FormLabel><FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl></FormItem>
-                    )} />
-                     <FormField name="email" control={form.control} render={({ field }) => (
-                        <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="john.doe@example.com" {...field} /></FormControl><FormMessage /></FormItem>
-                    )} />
-                     <FormField name="website" control={form.control} render={({ field }) => (
-                        <FormItem><FormLabel>Website</FormLabel><FormControl><Input placeholder="https://example.com" {...field} /></FormControl><FormMessage /></FormItem>
-                    )} />
-                  </TabsContent>
-                </CardContent>
-              </Card>
-            </Tabs>
-          </form>
-        </Form>
-      </div>
-
-      <div className="lg:col-span-2 lg:sticky lg:top-8 flex flex-col gap-8">
-        <QrPreview
-          data={qrData}
-          size={size}
-          margin={margin}
-          errorCorrection={errorCorrection}
-          logoUrl={logoUrl}
-        />
-        <Card>
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+        <div className="lg:col-span-3 flex flex-col gap-8">
+          <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Sparkles className="text-primary" />
-                    Premium: AI Logo
-                </CardTitle>
-                <CardDescription>Generate a custom logo to embed in your QR code.</CardDescription>
+              <CardTitle>Configuration</CardTitle>
+              <CardDescription>Adjust the appearance of your QR code.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form onSubmit={(e) => { e.preventDefault(); handleLogoGeneration(); }} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="logoPrompt"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Logo Description</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="e.g., A smiling coffee cup" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" disabled={isLogoGenerating} className="w-full">
-                            {isLogoGenerating ? 'Generating...' : 'Generate Logo'}
-                        </Button>
-                    </form>
-                </Form>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label>Size: {size}px</Label>
+                <Slider value={[size]} onValueChange={(v) => setSize(v[0])} min={50} max={1000} step={10} />
+              </div>
+              <div className="space-y-2">
+                <Label>Margin: {margin} modules</Label>
+                <Slider value={[margin]} onValueChange={(v) => setMargin(v[0])} min={0} max={20} step={1} />
+              </div>
+              <div className="space-y-2">
+                <Label>Error Correction</Label>
+                <Select value={errorCorrection} onValueChange={(v) => setErrorCorrection(v as "L" | "M" | "Q" | "H")}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="L">Low (L)</SelectItem>
+                    <SelectItem value="M">Medium (M)</SelectItem>
+                    <SelectItem value="Q">Quartile (Q)</SelectItem>
+                    <SelectItem value="H">High (H)</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground">Higher levels can withstand more damage.</p>
+              </div>
             </CardContent>
-        </Card>
-        <AiAdvisor qrData={qrData} />
+          </Card>
+
+          <Form {...form}>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as QrType)} className="w-full">
+                <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 h-auto">
+                  {TABS.map((tab) => (
+                    <TabsTrigger key={tab.id} value={tab.id} className="flex-col sm:flex-row gap-2 py-2">
+                      <tab.icon className="w-4 h-4" />
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <Card className="mt-4">
+                  <CardContent className="p-6">
+                    <TabsContent value="url" className="mt-0">
+                      <FormField name="url" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Website URL</FormLabel>
+                          <FormControl><Input placeholder="https://example.com" {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+                    </TabsContent>
+                    <TabsContent value="text" className="mt-0">
+                      <FormField name="text" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Text</FormLabel>
+                          <FormControl><Input placeholder="Enter any text" {...field} /></FormControl>
+                        </FormItem>
+                      )} />
+                    </TabsContent>
+                    <TabsContent value="phone" className="mt-0">
+                       <FormField name="phone" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl>
+                        </FormItem>
+                      )} />
+                    </TabsContent>
+                    <TabsContent value="wifi" className="mt-0 space-y-4">
+                      <FormField name="ssid" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Network Name (SSID)</FormLabel>
+                          <FormControl><Input placeholder="My Wi-Fi Network" {...field} /></FormControl>
+                        </FormItem>
+                      )} />
+                      <FormField name="password" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl><Input type="password" placeholder="Your network password" {...field} /></FormControl>
+                        </FormItem>
+                      )} />
+                      <FormField name="encryption" control={form.control} render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Encryption</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
+                            <SelectContent>
+                              <SelectItem value="WPA">WPA/WPA2</SelectItem>
+                              <SelectItem value="WEP">WEP</SelectItem>
+                              <SelectItem value="nopass">No Password</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )} />
+                    </TabsContent>
+                    <TabsContent value="contact" className="mt-0 space-y-4">
+                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <FormField name="firstName" control={form.control} render={({ field }) => (
+                              <FormItem><FormLabel>First Name</FormLabel><FormControl><Input placeholder="John" {...field} /></FormControl></FormItem>
+                          )} />
+                          <FormField name="lastName" control={form.control} render={({ field }) => (
+                              <FormItem><FormLabel>Last Name</FormLabel><FormControl><Input placeholder="Doe" {...field} /></FormControl></FormItem>
+                          )} />
+                      </div>
+                       <FormField name="contactPhone" control={form.control} render={({ field }) => (
+                          <FormItem><FormLabel>Phone</FormLabel><FormControl><Input type="tel" placeholder="+1234567890" {...field} /></FormControl></FormItem>
+                      )} />
+                       <FormField name="email" control={form.control} render={({ field }) => (
+                          <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="john.doe@example.com" {...field} /></FormControl><FormMessage /></FormItem>
+                      )} />
+                       <FormField name="website" control={form.control} render={({ field }) => (
+                          <FormItem><FormLabel>Website</FormLabel><FormControl><Input placeholder="https://example.com" {...field} /></FormControl><FormMessage /></FormItem>
+                      )} />
+                    </TabsContent>
+                  </CardContent>
+                </Card>
+              </Tabs>
+            </form>
+          </Form>
+        </div>
+
+        <div className="lg:col-span-2 lg:sticky lg:top-8 flex flex-col gap-8">
+          <QrPreview
+            data={qrData}
+            size={size}
+            margin={margin}
+            errorCorrection={errorCorrection}
+            logoUrl={logoUrl}
+          />
+          <Card>
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="text-primary" />
+                      Premium: AI Logo
+                  </CardTitle>
+                  <CardDescription>Generate a custom logo to embed in your QR code.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                  <Form {...form}>
+                      <form onSubmit={(e) => { e.preventDefault(); handleLogoGeneration(); }} className="space-y-4">
+                          <FormField
+                              control={form.control}
+                              name="logoPrompt"
+                              render={({ field }) => (
+                                  <FormItem>
+                                      <FormLabel>Logo Description</FormLabel>
+                                      <FormControl>
+                                          <Input placeholder="e.g., A smiling coffee cup" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                  </FormItem>
+                              )}
+                          />
+                          <Button type="submit" disabled={isLogoGenerating} className="w-full">
+                              {isLogoGenerating ? 'Generating...' : 'Generate Logo'}
+                          </Button>
+                      </form>
+                  </Form>
+              </CardContent>
+          </Card>
+          <AiAdvisor qrData={qrData} isSubscribed={isSubscribed} onUpgrade={() => setShowUpgradeDialog(true)} />
+        </div>
       </div>
-    </div>
+      <AlertDialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Upgrade to Premium</AlertDialogTitle>
+            <AlertDialogDescription>
+              This is a premium feature. Please upgrade your plan to generate AI logos and get design advice.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => router.push('/subscribe')}>Upgrade Now</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

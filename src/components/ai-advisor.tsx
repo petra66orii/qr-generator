@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from 'react';
@@ -20,9 +21,11 @@ const advisorSchema = z.object({
 
 interface AiAdvisorProps {
   qrData: string;
+  isSubscribed: boolean;
+  onUpgrade: () => void;
 }
 
-export function AiAdvisor({ qrData }: AiAdvisorProps) {
+export function AiAdvisor({ qrData, isSubscribed, onUpgrade }: AiAdvisorProps) {
   const [advice, setAdvice] = useState<QrCodeDesignAdvisorOutput | null>(null);
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
@@ -35,6 +38,11 @@ export function AiAdvisor({ qrData }: AiAdvisorProps) {
   });
 
   const onSubmit = (values: z.infer<typeof advisorSchema>) => {
+    if (!isSubscribed) {
+      onUpgrade();
+      return;
+    }
+
     if (!qrData) {
       toast({
         variant: 'destructive',
