@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Wand2 } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const advisorSchema = z.object({
@@ -66,8 +66,8 @@ export function AiAdvisor({ qrData }: AiAdvisorProps) {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Wand2 className="text-primary" />
-          AI-Powered Design Tool
+          <Sparkles className="text-primary" />
+          Premium: AI Design Advisor
         </CardTitle>
         <CardDescription>Get AI suggestions for optimal QR code design based on your use case.</CardDescription>
       </CardHeader>
