@@ -31,6 +31,7 @@ import { getLogo } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Link, FileText, Wifi, Contact, Phone, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
 
 type QrType = 'url' | 'text' | 'wifi' | 'contact' | 'phone';
 
@@ -289,24 +290,26 @@ export function QrCodeGenerator() {
                 <CardDescription>Generate a custom logo to embed in your QR code.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={(e) => { e.preventDefault(); handleLogoGeneration(); }} className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="logoPrompt"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Logo Description</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g., A smiling coffee cup" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button type="submit" disabled={isLogoGenerating} className="w-full">
-                        {isLogoGenerating ? 'Generating...' : 'Generate Logo'}
-                    </Button>
-                </form>
+                <Form {...form}>
+                    <form onSubmit={(e) => { e.preventDefault(); handleLogoGeneration(); }} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="logoPrompt"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Logo Description</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g., A smiling coffee cup" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit" disabled={isLogoGenerating} className="w-full">
+                            {isLogoGenerating ? 'Generating...' : 'Generate Logo'}
+                        </Button>
+                    </form>
+                </Form>
             </CardContent>
         </Card>
         <AiAdvisor qrData={qrData} />
@@ -314,10 +317,3 @@ export function QrCodeGenerator() {
     </div>
   );
 }
-
-// Custom Label component to be used within this file
-const Label = ({ children, ...props }: React.ComponentPropsWithoutRef<'label'>) => (
-  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" {...props}>
-    {children}
-  </label>
-);
