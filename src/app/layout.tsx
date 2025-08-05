@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/contexts/auth-context";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "QRickit - Free QR Code Generator | Create Custom QR Codes Instantly",
