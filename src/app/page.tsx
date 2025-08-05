@@ -71,7 +71,7 @@ export default function Home() {
           <h3 className="text-2xl font-semibold text-foreground mb-4 text-center">
             Supported QR Code Types
           </h3>
-          <ul className="space-y-3 mb-8">
+          <ul className="space-y-3 mb-8 text-center">
             <li className="text-muted-foreground">
               <strong className="text-foreground">URL QR Codes:</strong> Perfect
               for websites, landing pages, and online content
