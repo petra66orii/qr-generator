@@ -1,133 +1,101 @@
-
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Check, Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
-
-const plans = [
-  {
-    name: 'Monthly',
-    price: '$10',
-    pricePeriod: '/month',
-    features: [
-      'Unlimited QR Code Generations',
-      'AI Design Advisor',
-      'AI Logo Generation',
-      'Premium Support',
-    ],
-    isPopular: false,
-    priceId: 'price_monthly', // Example Price ID from a payment provider like Stripe
-  },
-  {
-    name: 'Yearly',
-    price: '$100',
-    pricePeriod: '/year',
-    features: [
-      'Unlimited QR Code Generations',
-      'AI Design Advisor',
-      'AI Logo Generation',
-      'Premium Support',
-      'Save 20% vs Monthly',
-    ],
-    isPopular: true,
-    priceId: 'price_yearly', // Example Price ID from a payment provider like Stripe
-  },
-];
+import { useState } from "react";
+import { PricingCards } from "@/components/pricing-cards";
+import { Navbar } from "@/components/navbar";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function SubscribePage() {
-  const router = useRouter();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const { user } = useAuth();
+  const [showAuthForm, setShowAuthForm] = useState(false);
 
-  const handleSubscribe = async (planName: string) => {
-    setIsLoading(planName);
-
-    // TODO: Replace this simulation with a real payment provider integration.
-    // 1. Create a server action or API route to handle payment session creation.
-    //    const response = await fetch('/api/create-checkout-session', {
-    //      method: 'POST',
-    //      headers: { 'Content-Type': 'application/json' },
-    //      body: JSON.stringify({ priceId: plan.priceId }),
-    //    });
-    //    const { sessionId } = await response.json();
-    //
-    // 2. Redirect the user to the payment provider's checkout page.
-    //    const stripe = await loadStripe('YOUR_STRIPE_PUBLIC_KEY');
-    //    await stripe.redirectToCheckout({ sessionId });
-
-    // --- Start of Simulation ---
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    // In a real app, a webhook from your payment provider would update the user's
-    // subscription status in your database. Here, we'll simulate it.
-    localStorage.setItem('isSubscribed', 'true');
-    toast({
-      title: 'Subscription Successful!',
-      description: `Welcome to QRickit Premium! You now have access to all features.`,
-    });
-    router.push('/');
-    // --- End of Simulation ---
-
-    setIsLoading(null);
+  const handleSelectPlan = (planId: string) => {
+    if (!user) {
+      // Redirect to login if user not authenticated
+      setShowAuthForm(true);
+      return;
+    }
+    // Plan selection is handled in PricingCards component
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-16">
-      <header className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter">
-          Choose Your Plan
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-4">
-          Unlock premium features and create stunning, professional QR codes.
-        </p>
-      </header>
-      <main className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
-          {plans.map((plan) => (
-            <Card key={plan.name} className={cn('flex flex-col', plan.isPopular && 'border-primary ring-2 ring-primary shadow-lg')}>
-                {plan.isPopular && (
-                    <div className="bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-t-lg rounded-b-none text-center flex items-center justify-center gap-2">
-                        <Star className="w-4 h-4" />
-                        Most Popular
-                    </div>
-                )}
-              <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
-                <CardDescription className="text-4xl font-extrabold text-foreground">{plan.price}<span className="text-lg font-normal text-muted-foreground">{plan.pricePeriod}</span></CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="space-y-3">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start">
-                      <Check className="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button
-                    className="w-full"
-                    size="lg"
-                    onClick={() => handleSubscribe(plan.name)}
-                    disabled={!!isLoading}
-                >
-                  {isLoading === plan.name ? 'Processing...' : `Subscribe to ${plan.name}`}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+    <>
+      <Navbar onAuthClick={() => setShowAuthForm(true)} />
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Choose Your Plan
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Upgrade to Premium and unlock unlimited QR codes, AI-powered
+            features, and advanced customization options.
+          </p>
         </div>
-      </main>
-        <footer className="text-center mt-12">
-            <Button variant="link" onClick={() => router.push('/')}>
-                Back to QR Generator
-            </Button>
-        </footer>
-    </div>
+
+        <PricingCards onSelectPlan={handleSelectPlan} />
+
+        {/* Features Comparison */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Why Choose Premium?
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">AI-Powered Features</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• AI logo generation for branded QR codes</li>
+                <li>• Smart design recommendations</li>
+                <li>• Optimal size and placement advice</li>
+                <li>• Use case-specific suggestions</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Enhanced Features</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Unlimited QR code generation</li>
+                <li>• All QR code types available</li>
+                <li>• QR code history and storage</li>
+                <li>• Basic scan tracking</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Storage & Organization</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Save and organize your QR codes</li>
+                <li>• Access QR code history</li>
+                <li>• Track basic usage statistics</li>
+                <li>• Export and share easily</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Future Features</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Advanced analytics (coming soon)</li>
+                <li>• Custom color themes (coming soon)</li>
+                <li>• Multiple export formats (coming soon)</li>
+                <li>• Priority support (coming soon)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Money Back Guarantee */}
+        <div className="mt-16 text-center">
+          <div className="bg-muted/50 rounded-lg p-8 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-semibold mb-4">
+              30-Day Money Back Guarantee
+            </h3>
+            <p className="text-muted-foreground">
+              Try Premium risk-free. If you're not completely satisfied within
+              30 days, we'll refund your purchase, no questions asked.
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
