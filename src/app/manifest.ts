@@ -2,23 +2,29 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'QRickit - QR Code Generator',
+    name: 'QRickit - Free QR Code Generator',
     short_name: 'QRickit',
-    description: 'Create professional QR codes instantly',
+    description: 'Create professional QR codes instantly for URLs, Wi-Fi, contacts, phone numbers, and text. AI-powered design tools included.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#9F50C7',
+    background_color: '#0f0f23',
+    theme_color: '#3b82f6',
     icons: [
       {
-        src: '/icon-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
+        src: '/icon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'any',
       },
       {
-        src: '/icon-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
+        src: '/apple-icon.svg',
+        sizes: '180x180',
+        type: 'image/svg+xml',
+      },
+      {
+        src: '/favicon.ico',
+        sizes: '32x32',
+        type: 'image/x-icon',
       },
     ],
   }
