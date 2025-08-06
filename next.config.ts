@@ -21,7 +21,8 @@ const nextConfig: NextConfig = {
   },
   // Performance optimizations
   experimental: {
-    optimizeCss: true,
+    // Disabled optimizeCss due to critters dependency issues
+    // optimizeCss: true,
   },
   // Compression
   compress: true,
