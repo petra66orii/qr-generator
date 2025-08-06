@@ -26,9 +26,7 @@ export const metadata: Metadata = {
       { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "32x32" },
     ],
-    apple: [
-      { url: "/apple-icon.svg", type: "image/svg+xml" },
-    ],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
     title: "QRickit - Free QR Code Generator",
@@ -38,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "QRickit",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.svg", // TODO: Convert to PNG for better compatibility
         width: 1200,
         height: 630,
         alt: "QRickit QR Code Generator",
@@ -52,7 +50,7 @@ export const metadata: Metadata = {
     title: "QRickit - Free QR Code Generator",
     description:
       "Create professional QR codes instantly. Support for URLs, Wi-Fi, contacts, and more.",
-    images: ["/og-image.png"],
+    images: ["/og-image.svg"], // TODO: Convert to PNG for better compatibility
   },
   robots: {
     index: true,

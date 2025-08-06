@@ -1,0 +1,90 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0f0f23"/>
+  
+  <!-- Left side - Large QR Code -->
+  <g transform="translate(50, 50)">
+    <!-- QR Code Background -->
+    <rect width="400" height="400" fill="#ffffff" rx="20"/>
+    
+    <!-- QR Code Pattern -->
+    <!-- Top-left corner -->
+    <rect x="30" y="30" width="100" height="100" fill="#000000"/>
+    <rect x="40" y="40" width="80" height="80" fill="#ffffff"/>
+    <rect x="50" y="50" width="60" height="60" fill="#000000"/>
+    <rect x="60" y="60" width="40" height="40" fill="#ffffff"/>
+    <rect x="70" y="70" width="20" height="20" fill="#000000"/>
+    
+    <!-- Top-right corner -->
+    <rect x="270" y="30" width="100" height="100" fill="#000000"/>
+    <rect x="280" y="40" width="80" height="80" fill="#ffffff"/>
+    <rect x="290" y="50" width="60" height="60" fill="#000000"/>
+    <rect x="300" y="60" width="40" height="40" fill="#ffffff"/>
+    <rect x="310" y="70" width="20" height="20" fill="#000000"/>
+    
+    <!-- Bottom-left corner -->
+    <rect x="30" y="270" width="100" height="100" fill="#000000"/>
+    <rect x="40" y="280" width="80" height="80" fill="#ffffff"/>
+    <rect x="50" y="290" width="60" height="60" fill="#000000"/>
+    <rect x="60" y="300" width="40" height="40" fill="#ffffff"/>
+    <rect x="70" y="310" width="20" height="20" fill="#000000"/>
+    
+    <!-- Center alignment pattern -->
+    <rect x="180" y="180" width="40" height="40" fill="#000000"/>
+    <rect x="185" y="185" width="30" height="30" fill="#ffffff"/>
+    <rect x="190" y="190" width="20" height="20" fill="#000000"/>
+    <rect x="195" y="195" width="10" height="10" fill="#ffffff"/>
+    
+    <!-- Data patterns -->
+    <rect x="160" y="30" width="20" height="20" fill="#000000"/>
+    <rect x="200" y="30" width="20" height="20" fill="#000000"/>
+    <rect x="240" y="30" width="20" height="20" fill="#000000"/>
+    
+    <rect x="30" y="160" width="20" height="20" fill="#000000"/>
+    <rect x="70" y="160" width="20" height="20" fill="#000000"/>
+    <rect x="110" y="160" width="20" height="20" fill="#000000"/>
+    <rect x="270" y="160" width="20" height="20" fill="#000000"/>
+    <rect x="310" y="160" width="20" height="20" fill="#000000"/>
+    <rect x="350" y="160" width="20" height="20" fill="#000000"/>
+    
+    <rect x="160" y="270" width="20" height="20" fill="#000000"/>
+    <rect x="200" y="270" width="20" height="20" fill="#000000"/>
+    <rect x="270" y="270" width="20" height="20" fill="#000000"/>
+    <rect x="310" y="270" width="20" height="20" fill="#000000"/>
+    <rect x="350" y="270" width="20" height="20" fill="#000000"/>
+    
+    <rect x="160" y="310" width="20" height="20" fill="#000000"/>
+    <rect x="200" y="310" width="20" height="20" fill="#000000"/>
+    <rect x="240" y="310" width="20" height="20" fill="#000000"/>
+    <rect x="310" y="310" width="20" height="20" fill="#000000"/>
+    <rect x="350" y="310" width="20" height="20" fill="#000000"/>
+    
+    <rect x="160" y="350" width="20" height="20" fill="#000000"/>
+    <rect x="200" y="350" width="20" height="20" fill="#000000"/>
+    <rect x="240" y="350" width="20" height="20" fill="#000000"/>
+    <rect x="280" y="350" width="20" height="20" fill="#000000"/>
+    <rect x="350" y="350" width="20" height="20" fill="#000000"/>
+  </g>
+  
+  <!-- Right side - Text content -->
+  <g transform="translate(550, 100)">
+    <!-- Main title -->
+    <text x="0" y="80" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff">QRickit</text>
+    
+    <!-- Subtitle -->
+    <text x="0" y="140" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="400" fill="#8b94a5">Free QR Code Generator</text>
+    
+    <!-- Features list -->
+    <text x="0" y="220" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">✓ Instant QR Code Generation</text>
+    <text x="0" y="260" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">✓ Wi-Fi, URLs, Contacts &amp; More</text>
+    <text x="0" y="300" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">✓ AI-Powered Design Tools</text>
+    <text x="0" y="340" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">✓ Custom Logos &amp; Colors</text>
+    
+    <!-- Call to action -->
+    <rect x="0" y="400" width="280" height="60" fill="#3b82f6" rx="12"/>
+    <text x="140" y="440" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff" text-anchor="middle">Create QR Code Now</text>
+  </g>
+  
+  <!-- Bottom branding -->
+  <text x="600" y="580" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="400" fill="#8b94a5" text-anchor="middle">Professional QR codes in seconds • No signup required</text>
+</svg>

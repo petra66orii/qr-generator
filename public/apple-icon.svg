@@ -24,8 +24,8 @@
   
   <!-- Center pattern -->
   <rect x="75" y="75" width="30" height="30" fill="#ffffff"/>
-  <rect x="80" y="80" width="20" height="20" fill="#000000"/>
-  <rect x="85" y="85" width="10" height="10" fill="#ffffff"/>
+  <rect x="80" y="80" width="20" height="20" fill="#ffffff"/>
+  <rect x="85" y="85" width="10" height="10" fill="#000000"/>
   
   <!-- Data pattern -->
   <rect x="70" y="20" width="10" height="10" fill="#ffffff"/>
