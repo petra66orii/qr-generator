@@ -10,26 +10,13 @@ export function Footer() {
     product: [
       { label: "QR Generator", href: "/" },
       { label: "Pricing", href: "/subscribe" },
-      { label: "Features", href: "#features" },
-      { label: "AI Tools", href: "#ai-features" },
     ],
-    support: [
-      { label: "Help Center", href: "#help" },
-      { label: "Contact Us", href: "mailto:support@qrickit.com" },
-      { label: "FAQ", href: "#faq" },
-      { label: "Documentation", href: "#docs" },
-    ],
+    support: [{ label: "Contact Us", href: "/contact" }],
     legal: [
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
       { label: "Cookie Policy", href: "/privacy#cookies" },
       { label: "GDPR", href: "/privacy#gdpr" },
-    ],
-    company: [
-      { label: "About Us", href: "/about" },
-      { label: "Blog", href: "/blog" },
-      { label: "Careers", href: "/careers" },
-      { label: "Press Kit", href: "/press" },
     ],
   };
 
@@ -37,7 +24,7 @@ export function Footer() {
     <footer className="bg-background border-t mt-20">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2 mb-4">
@@ -93,23 +80,6 @@ export function Footer() {
             <ul className="space-y-2">
               {footerLinks.legal.map((link, index) => (
                 <li key={`legal-${index}-${link.href}`}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-3">Company</h3>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link, index) => (
-                <li key={`company-${index}-${link.href}`}>
                   <Link
                     href={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
