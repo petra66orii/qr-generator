@@ -1,20 +1,44 @@
-import { Metadata } from "next";
-import { Navbar } from "@/components/navbar";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Terms of Service - QRickit",
-  description:
-    "QRickit's terms of service outlining the conditions for using our QR code generation platform.",
-};
+import { useState, useEffect } from "react";
+import { Navbar } from "@/components/navbar";
+import { AuthForm } from "@/components/AuthForm";
 
 export default function TermsPage() {
+  const [showAuthForm, setShowAuthForm] = useState(false);
+
+  useEffect(() => {
+    document.title = "Terms of Service - QRickit";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+        "QRickit's terms of service outlining the conditions for using our QR code generation platform."
+      );
+    }
+  }, []);
+
   return (
     <>
-      <Navbar
-        onAuthClick={() => {
-          /* TODO: handle auth click */
-        }}
-      />
+      <Navbar onAuthClick={() => setShowAuthForm(true)} />
+
+      {showAuthForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-lg p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Sign In</h2>
+              <button
+                onClick={() => setShowAuthForm(false)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                ×
+              </button>
+            </div>
+            <AuthForm />
+          </div>
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
         <p className="text-muted-foreground mb-8">
