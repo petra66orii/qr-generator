@@ -7,6 +7,15 @@ import { Timestamp } from 'firebase/firestore';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
+  // Temporarily disable webhook processing if webhook secret is not configured
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    console.log('Webhook secret not configured, skipping webhook processing');
+    return NextResponse.json(
+      { message: 'Webhook processing disabled - secret not configured' },
+      { status: 200 }
+    );
+  }
+
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get('stripe-signature');
