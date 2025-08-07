@@ -7,11 +7,11 @@ import { Timestamp } from 'firebase/firestore';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
-  // Temporarily disable webhook processing if webhook secret is not configured
-  if (!process.env.STRIPE_WEBHOOK_SECRET) {
-    console.log('Webhook secret not configured, skipping webhook processing');
+  // Check if Stripe is configured
+  if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
+    console.log('Stripe or webhook secret not configured, skipping webhook processing');
     return NextResponse.json(
-      { message: 'Webhook processing disabled - secret not configured' },
+      { message: 'Webhook processing disabled - Stripe not fully configured' },
       { status: 200 }
     );
   }
@@ -99,6 +99,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Get the subscription
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
   const subscription = await stripe.subscriptions.retrieve(
     session.subscription as string
   );
@@ -116,6 +119,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
   const customer = await stripe.customers.retrieve(subscription.customer as string);
   
   if ('deleted' in customer) return;
@@ -156,6 +174,9 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 }
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized');
+  }
   const customer = await stripe.customers.retrieve(subscription.customer as string);
   
   if ('deleted' in customer) return;

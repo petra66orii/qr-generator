@@ -6,6 +6,14 @@ import { UserService } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Stripe is configured
+    if (!stripe) {
+      return NextResponse.json(
+        { error: 'Stripe is not configured' },
+        { status: 503 }
+      );
+    }
+
     const { planId, userId } = await request.json();
 
     if (!planId || !userId) {
