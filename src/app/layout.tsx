@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/contexts/auth-context";
+import { ClientAuthProvider } from "@/components/client-auth-provider";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
@@ -94,13 +94,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
+          <ClientAuthProvider>
             <div className="min-h-screen flex flex-col">
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
             <Toaster />
-          </AuthProvider>
+          </ClientAuthProvider>
         </ThemeProvider>
       </body>
     </html>
