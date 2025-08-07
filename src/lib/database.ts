@@ -106,7 +106,7 @@ const cleanUndefinedValues = (obj: any): any => {
 // QR Code CRUD operations
 export class QRCodeService {
   static async create(qrCode: Omit<QRCode, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
-    const docRef = await addDoc(collection(db, collections.qrCodes), {
+    const docRef = await addDoc(collection(db(), collections.qrCodes), {
       ...qrCode,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -115,7 +115,7 @@ export class QRCodeService {
   }
 
   static async getById(id: string): Promise<QRCode | null> {
-    const docRef = doc(db, collections.qrCodes, id);
+    const docRef = doc(db(), collections.qrCodes, id);
     const docSnap = await getDoc(docRef);
     
     if (docSnap.exists()) {
@@ -126,7 +126,7 @@ export class QRCodeService {
 
   static async getByUserId(userId: string, limitCount = 50): Promise<QRCode[]> {
     const q = query(
-      collection(db, collections.qrCodes),
+      collection(db(), collections.qrCodes),
       where('userId', '==', userId),
       orderBy('createdAt', 'desc'),
       limit(limitCount)
@@ -140,7 +140,7 @@ export class QRCodeService {
   }
 
   static async update(id: string, updates: Partial<QRCode>): Promise<void> {
-    const docRef = doc(db, collections.qrCodes, id);
+    const docRef = doc(db(), collections.qrCodes, id);
     await updateDoc(docRef, {
       ...updates,
       updatedAt: serverTimestamp(),
@@ -148,7 +148,7 @@ export class QRCodeService {
   }
 
   static async delete(id: string): Promise<void> {
-    const docRef = doc(db, collections.qrCodes, id);
+    const docRef = doc(db(), collections.qrCodes, id);
     await deleteDoc(docRef);
   }
 
@@ -165,7 +165,7 @@ export class QRCodeService {
 // User Profile CRUD operations
 export class UserService {
   static async createOrUpdate(userProfile: Omit<UserProfile, 'id' | 'createdAt' | 'updatedAt'>): Promise<void> {
-    const userRef = doc(db, collections.users, userProfile.uid);
+    const userRef = doc(db(), collections.users, userProfile.uid);
     const userDoc = await getDoc(userRef);
     
     // Clean undefined values from the user profile
@@ -208,7 +208,7 @@ export class UserService {
   }
 
   static async getById(uid: string): Promise<UserProfile | null> {
-    const docRef = doc(db, collections.users, uid);
+    const docRef = doc(db(), collections.users, uid);
     const docSnap = await getDoc(docRef);
     
     if (docSnap.exists()) {
@@ -218,7 +218,7 @@ export class UserService {
   }
 
   static async updateSubscription(uid: string, subscription: UserProfile['subscription']): Promise<void> {
-    const userRef = doc(db, collections.users, uid);
+    const userRef = doc(db(), collections.users, uid);
     await updateDoc(userRef, {
       subscription,
       updatedAt: serverTimestamp(),
@@ -229,7 +229,7 @@ export class UserService {
     const user = await this.getById(uid);
     if (user) {
       const currentCount = user.usage[type] || 0;
-      await updateDoc(doc(db, collections.users, uid), {
+      await updateDoc(doc(db(), collections.users, uid), {
         [`usage.${type}`]: currentCount + 1,
         updatedAt: serverTimestamp(),
       });
@@ -240,7 +240,7 @@ export class UserService {
 // AI Usage tracking
 export class AIUsageService {
   static async logUsage(usage: Omit<AIUsage, 'id' | 'createdAt'>): Promise<string> {
-    const docRef = await addDoc(collection(db, collections.aiUsage), {
+    const docRef = await addDoc(collection(db(), collections.aiUsage), {
       ...usage,
       createdAt: serverTimestamp(),
     });
@@ -249,7 +249,7 @@ export class AIUsageService {
 
   static async getByUserId(userId: string, limitCount = 100): Promise<AIUsage[]> {
     const q = query(
-      collection(db, collections.aiUsage),
+      collection(db(), collections.aiUsage),
       where('userId', '==', userId),
       orderBy('createdAt', 'desc'),
       limit(limitCount)
