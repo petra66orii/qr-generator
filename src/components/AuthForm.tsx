@@ -29,13 +29,13 @@ export function AuthForm() {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth(), email, password);
         toast({
           title: "Welcome back!",
           description: "You have successfully signed in.",
         });
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(auth(), email, password);
         toast({
           title: "Account created!",
           description: "Your account has been created successfully.",
@@ -56,7 +56,7 @@ export function AuthForm() {
     }
 
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(auth(), email);
       toast({
         title: "Password reset email sent",
         description: "Check your email for password reset instructions.",
