@@ -28,21 +28,53 @@ export function AuthForm() {
     setLoading(true);
 
     try {
+      // Ensure Firebase Auth is initialized
+      const authInstance = auth();
+      if (!authInstance) {
+        throw new Error("Authentication service is not available. Please try again.");
+      }
+
       if (isLogin) {
-        await signInWithEmailAndPassword(auth(), email, password);
+        await signInWithEmailAndPassword(authInstance, email, password);
         toast({
           title: "Welcome back!",
           description: "You have successfully signed in.",
         });
       } else {
-        await createUserWithEmailAndPassword(auth(), email, password);
+        await createUserWithEmailAndPassword(authInstance, email, password);
         toast({
           title: "Account created!",
           description: "Your account has been created successfully.",
         });
       }
     } catch (err: any) {
-      const errorMessage = err.message.replace("Firebase: ", "");
+      console.error("Auth error:", err);
+      let errorMessage = "An error occurred. Please try again.";
+      
+      if (err.code) {
+        switch (err.code) {
+          case "auth/email-already-in-use":
+            errorMessage = "This email is already registered. Try signing in instead.";
+            break;
+          case "auth/weak-password":
+            errorMessage = "Password should be at least 6 characters.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Please enter a valid email address.";
+            break;
+          case "auth/user-not-found":
+            errorMessage = "No account found with this email.";
+            break;
+          case "auth/wrong-password":
+            errorMessage = "Incorrect password.";
+            break;
+          default:
+            errorMessage = err.message.replace("Firebase: ", "");
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -56,12 +88,18 @@ export function AuthForm() {
     }
 
     try {
-      await sendPasswordResetEmail(auth(), email);
+      const authInstance = auth();
+      if (!authInstance) {
+        throw new Error("Authentication service is not available. Please try again.");
+      }
+      
+      await sendPasswordResetEmail(authInstance, email);
       toast({
         title: "Password reset email sent",
         description: "Check your email for password reset instructions.",
       });
     } catch (err: any) {
+      console.error("Password reset error:", err);
       setError(err.message.replace("Firebase: ", ""));
     }
   }

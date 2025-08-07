@@ -61,6 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const setupAuth = async () => {
       try {
+        // Give Firebase time to initialize
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         const authInstance = auth();
         if (!authInstance) {
           console.warn("Firebase auth not available");
