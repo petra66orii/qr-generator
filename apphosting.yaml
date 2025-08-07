@@ -15,9 +15,9 @@ runConfig:
     - variable: STRIPE_SECRET_KEY
       secret: STRIPE_SECRET_KEY
 
-    # Firebase Configuration (Public - can be plain values)
+    # Firebase Configuration
     - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-      value: "AIzaSyAU0oqTL1upv3HdphFujoz76og6wH37hNA"
+      secret: NEXT_PUBLIC_FIREBASE_API_KEY
     - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
       value: "qr-generator-2229d.firebaseapp.com"
     - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
@@ -29,9 +29,9 @@ runConfig:
     - variable: NEXT_PUBLIC_FIREBASE_APP_ID
       value: "1:723742977485:web:7c8f2902ade9c3d8e6a884"
 
-    # Stripe Public Key (can be plain value)
+    # Stripe Public Key
     - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-      value: "pk_test_51RtCofDreQsjIo2dgRgi1AiItajKRmSJMnxKiyNGwuG4NfoBLzhqql6oajt2capU11lSytutXvpZNoeJbzWmyO8U00uW1zxL7q"
+      secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 # Serve all assets from the Next.js public directory.
 # All other requests are handled by the Next.js server.
