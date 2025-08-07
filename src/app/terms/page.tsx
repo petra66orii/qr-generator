@@ -8,12 +8,12 @@ export default function TermsPage() {
   const [showAuthForm, setShowAuthForm] = useState(false);
 
   useEffect(() => {
-    document.title = "Terms of Service - QRickit";
+    document.title = "Terms of Service - QRFlow";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "QRickit's terms of service outlining the conditions for using our QR code generation platform."
+        "QRFlow's terms of service outlining the conditions for using our QR code generation platform."
       );
     }
   }, []);
@@ -56,14 +56,13 @@ export default function TermsPage() {
               1. Acceptance of Terms
             </h2>
             <p className="text-muted-foreground mb-4">
-              By accessing and using QRickit ("Service"), you accept and agree
-              to be bound by the terms and provision of this agreement. If you
-              do not agree to abide by the above, please do not use this
-              service.
+              By accessing and using QRFlow ("Service"), you accept and agree to
+              be bound by the terms and provision of this agreement. If you do
+              not agree to abide by the above, please do not use this service.
             </p>
             <p className="text-muted-foreground">
               These Terms of Service ("Terms") govern your use of our website
-              located at qrickit.com (the "Service") operated by QRickit ("us",
+              located at qrflow.com (the "Service") operated by QRFlow ("us",
               "we", or "our").
             </p>
           </section>
@@ -73,7 +72,7 @@ export default function TermsPage() {
               2. Description of Service
             </h2>
             <p className="text-muted-foreground mb-4">
-              QRickit is a web-based platform that provides:
+              QRFlow is a web-based platform that provides:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>
@@ -126,7 +125,7 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-medium mb-3">Permitted Uses</h3>
             <p className="text-muted-foreground mb-4">
-              You may use QRickit for lawful purposes including:
+              You may use QRFlow for lawful purposes including:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>
@@ -142,7 +141,7 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-medium my-3">Prohibited Uses</h3>
             <p className="text-muted-foreground mb-4">
-              You may NOT use QRickit to:
+              You may NOT use QRFlow to:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>
@@ -166,7 +165,7 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-medium mb-3">Subscription Plans</h3>
             <p className="text-muted-foreground mb-4">
-              QRickit offers premium subscription plans that provide additional
+              QRFlow offers premium subscription plans that provide additional
               features. By subscribing, you agree to pay the applicable fees.
             </p>
 
@@ -200,23 +199,23 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-medium mb-3">Our Rights</h3>
             <p className="text-muted-foreground mb-4">
-              QRickit and its original content, features, and functionality are
-              owned by QRickit and are protected by international copyright,
+              QRFlow and its original content, features, and functionality are
+              owned by QRFlow and are protected by international copyright,
               trademark, patent, trade secret, and other intellectual property
               laws.
             </p>
 
             <h3 className="text-xl font-medium mb-3">Your Content</h3>
             <p className="text-muted-foreground mb-4">
-              You retain ownership of any content you input into QRickit. By
+              You retain ownership of any content you input into QRFlow. By
               using our service, you grant us a limited license to process your
               content solely for the purpose of providing our service.
             </p>
 
             <h3 className="text-xl font-medium mb-3">Generated QR Codes</h3>
             <p className="text-muted-foreground mb-4">
-              QR codes generated using QRickit belong to you. You may use them
-              freely for any lawful purpose. QRickit does not claim ownership of
+              QR codes generated using QRFlow belong to you. You may use them
+              freely for any lawful purpose. QRFlow does not claim ownership of
               the QR codes you create.
             </p>
           </section>
@@ -253,7 +252,7 @@ export default function TermsPage() {
               Limitation of Liability
             </h3>
             <p className="text-muted-foreground mb-4">
-              In no event shall QRickit be liable for any indirect, incidental,
+              In no event shall QRFlow be liable for any indirect, incidental,
               special, consequential, or punitive damages arising out of your
               use of the service.
             </p>
@@ -314,8 +313,8 @@ export default function TermsPage() {
               contact us:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>Email: legal@qrickit.com</li>
-              <li>Support: support@qrickit.com</li>
+              <li>Email: legal@QRFlow.com</li>
+              <li>Support: support@QRFlow.com</li>
             </ul>
           </section>
 

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - QRickit",
+  title: "Terms of Service - QRFlow",
   description:
-    "QRickit's terms of service outlining the conditions for using our QR code generation platform.",
+    "QRFlow's terms of service outlining the conditions for using our QR code generation platform.",
 };

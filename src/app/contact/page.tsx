@@ -42,12 +42,12 @@ export default function ContactPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    document.title = "Contact Us - QRickit";
+    document.title = "Contact Us - QRFlow";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Get in touch with QRickit. Send us your questions, feedback, or support requests through our contact form."
+        "Get in touch with QRFlow. Send us your questions, feedback, or support requests through our contact form."
       );
     }
   }, []);
@@ -264,7 +264,7 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2">Feature Requests</h3>
                   <p className="text-sm text-muted-foreground">
                     Have an idea for a new feature or improvement? We love
-                    hearing from our users about how we can make QRickit better.
+                    hearing from our users about how we can make QRFlow better.
                   </p>
                 </div>
 

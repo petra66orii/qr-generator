@@ -48,9 +48,8 @@ export function Navbar({ onAuthClick }: NavbarProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <QrCodeIcon className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold font-headline">QRickit</span>
-          </Link>
-
+            <span className="text-xl font-bold font-headline">QRFlow</span>
+          </Link>{" "}
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
@@ -64,7 +63,6 @@ export function Navbar({ onAuthClick }: NavbarProps) {
               </Link>
             ))}
           </div>
-
           {/* Desktop Auth & Theme */}
           <div className="hidden md:flex items-center space-x-4">
             {user && (
@@ -94,7 +92,6 @@ export function Navbar({ onAuthClick }: NavbarProps) {
               </Button>
             )}
           </div>
-
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />

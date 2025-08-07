@@ -29,7 +29,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <QrCodeIcon className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">QRickit</span>
+              <span className="text-xl font-bold font-headline">QRFlow</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
               Create professional QR codes instantly with AI-powered design
@@ -97,7 +97,7 @@ export function Footer() {
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-            © {currentYear} QRickit. All rights reserved.
+            © {currentYear} QRFlow. All rights reserved.
           </div>
 
           <div className="flex items-center space-x-4 text-sm text-muted-foreground">

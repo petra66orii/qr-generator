@@ -8,12 +8,12 @@ export default function PrivacyPage() {
   const [showAuthForm, setShowAuthForm] = useState(false);
 
   useEffect(() => {
-    document.title = "Privacy Policy - QRickit";
+    document.title = "Privacy Policy - QRFlow";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "QRickit's privacy policy explaining how we collect, use, and protect your personal information."
+        "QRFlow's privacy policy explaining how we collect, use, and protect your personal information."
       );
     }
   }, []);
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
 
             <h3 className="text-xl font-medium my-3">Account Information</h3>
             <p className="text-muted-foreground mb-4">
-              When you create an account with QRickit, we collect:
+              When you create an account with QRFlow, we collect:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>Email address (required for account creation)</li>
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
 
             <h3 className="text-xl font-medium my-3">QR Code Data</h3>
             <p className="text-muted-foreground mb-4">
-              QRickit processes the following data when you generate QR codes:
+              QRFlow processes the following data when you generate QR codes:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>URLs, text, and contact information you input</li>
@@ -158,7 +158,7 @@ export default function PrivacyPage() {
               5. Cookies and Tracking
             </h2>
             <p className="text-muted-foreground mb-4">
-              QRickit uses essential cookies to:
+              QRFlow uses essential cookies to:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>Maintain your login session</li>
@@ -202,7 +202,7 @@ export default function PrivacyPage() {
               </li>
             </ul>
             <p className="text-muted-foreground mt-4">
-              To exercise these rights, contact us at privacy@qrickit.com
+              To exercise these rights, contact us at privacy@QRFlow.com
             </p>
           </section>
 
@@ -225,7 +225,7 @@ export default function PrivacyPage() {
               8. Children's Privacy
             </h2>
             <p className="text-muted-foreground mb-4">
-              QRickit is not intended for children under 13. We do not knowingly
+              QRFlow is not intended for children under 13. We do not knowingly
               collect personal information from children under 13. If you become
               aware that a child has provided us with personal information,
               please contact us immediately.
@@ -250,8 +250,8 @@ export default function PrivacyPage() {
               us:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>Email: privacy@qrickit.com</li>
-              <li>Support: support@qrickit.com</li>
+              <li>Email: privacy@QRFlow.com</li>
+              <li>Support: support@QRFlow.com</li>
             </ul>
           </section>
         </div>

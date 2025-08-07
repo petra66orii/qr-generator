@@ -1,6 +1,6 @@
 {
-  "name": "QRickit - Free QR Code Generator",
-  "short_name": "QRickit",
+  "name": "QRFlow - Free QR Code Generator",
+  "short_name": "QRFlow",
   "description": "Create professional QR codes instantly for URLs, Wi-Fi, contacts, and more",
   "start_url": "/",
   "display": "standalone",
@@ -34,7 +34,7 @@
       "src": "/og-image.svg",
       "sizes": "1200x630",
       "type": "image/svg+xml",
-      "label": "QRickit QR Code Generator Interface"
+      "label": "QRFlow QR Code Generator Interface"
     }
   ]
 }

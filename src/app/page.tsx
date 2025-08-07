@@ -27,7 +27,7 @@ export default function Home() {
           <div className="inline-flex items-center gap-4 mb-4">
             <QrCodeIcon className="w-12 h-12 text-primary" />
             <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter">
-              QRickit - Free QR Code Generator
+              QRFlow - Free QR Code Generator
             </h1>
           </div>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -59,10 +59,10 @@ export default function Home() {
         {/* Features Section */}
         <section id="features" className="mt-16 max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
-            Why Choose QRickit for QR Code Generation?
+            Why Choose QRFlow for QR Code Generation?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed text-center">
-            QRickit is the ultimate free QR code generator that helps you create
+            QRFlow is the ultimate free QR code generator that helps you create
             professional, customizable QR codes in seconds. Whether you need QR
             codes for business cards, marketing materials, or personal use, our
             tool provides everything you need.

@@ -4,7 +4,7 @@ export function StructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "QRickit",
+    name: "QRFlow",
     description:
       "Free QR code generator for URLs, Wi-Fi, contacts, phone numbers, and text. Create professional QR codes with AI-powered design tools.",
     url: "https://yourdomain.com",
@@ -17,7 +17,7 @@ export function StructuredData() {
     },
     creator: {
       "@type": "Organization",
-      name: "QRickit",
+      name: "QRFlow",
     },
     featureList: [
       "URL QR codes",
