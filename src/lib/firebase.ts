@@ -12,6 +12,11 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Log Firebase configuration for debugging
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Firebase Config:', firebaseConfig);
+}
+
 // Lazy initialization to avoid build-time issues
 let app: FirebaseApp | null = null;
 let authInstance: Auth | null = null;
@@ -29,9 +34,17 @@ function getFirebaseApp(): FirebaseApp {
 
 function getFirebaseAuth(): Auth {
   if (!authInstance && typeof window !== 'undefined') {
+    if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+      throw new Error("Firebase configuration is missing or incorrect. Please check your environment variables.");
+    }
     authInstance = getAuth(getFirebaseApp());
   }
-  return authInstance!;
+
+  if (!authInstance) {
+    throw new Error("Failed to initialize Firebase Auth. Please ensure Firebase is properly configured.");
+  }
+
+  return authInstance;
 }
 
 function getFirebaseDb(): Firestore {
