@@ -53,7 +53,7 @@
     --muted-foreground: 270 20% 70%;
     --accent: 82 79% 55%;
     --accent-foreground: 282 15% 10%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62.8% 45%; /* Adjusted to a lighter shade of red */
     --destructive-foreground: 0 0% 98%;
     --border: 282 10% 25%;
     --input: 282 10% 25%;
