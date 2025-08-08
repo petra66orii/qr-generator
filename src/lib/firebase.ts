@@ -13,9 +13,7 @@ const firebaseConfig = {
 };
 
 // Log Firebase configuration for debugging
-if (process.env.NODE_ENV !== 'production') {
-  console.log('Firebase Config:', firebaseConfig);
-}
+console.log('Firebase Config:', firebaseConfig);
 
 // Lazy initialization to avoid build-time issues
 let app: FirebaseApp | null = null;
