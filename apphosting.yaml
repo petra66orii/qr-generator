@@ -10,28 +10,55 @@ runConfig:
     # AI Features
     - variable: GOOGLE_API_KEY
       secret: GOOGLE_API_KEY
+      availability:
+        - BUILD
+        - RUNTIME
 
     # Stripe Configuration (Server-side secrets)
     - variable: STRIPE_SECRET_KEY
       secret: STRIPE_SECRET_KEY
+      availability:
+        - BUILD
+        - RUNTIME
 
     # Firebase Configuration
     - variable: NEXT_PUBLIC_FIREBASE_API_KEY
       secret: NEXT_PUBLIC_FIREBASE_API_KEY
+      availability:
+        - BUILD
+        - RUNTIME
     - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
       value: "qr-generator-2229d.firebaseapp.com"
+      availability:
+        - BUILD
+        - RUNTIME
     - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
       value: "qr-generator-2229d"
+      availability:
+        - BUILD
+        - RUNTIME
     - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
       value: "qr-generator-2229d.firebasestorage.app"
+      availability:
+        - BUILD
+        - RUNTIME
     - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
       value: "723742977485"
+      availability:
+        - BUILD
+        - RUNTIME
     - variable: NEXT_PUBLIC_FIREBASE_APP_ID
       value: "1:723742977485:web:7c8f2902ade9c3d8e6a884"
+      availability:
+        - BUILD
+        - RUNTIME
 
     # Stripe Public Key
     - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      availability:
+        - BUILD
+        - RUNTIME
 
 # Serve all assets from the Next.js public directory.
 # All other requests are handled by the Next.js server.
