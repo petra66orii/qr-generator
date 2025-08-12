@@ -13,12 +13,20 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "appAssociation": "AUTO",
     "rewrites": [
       {
+        "source": "/_next/static/**",
+        "destination": "/_next/static/**"
+      },
+      {
         "source": "**",
-        "destination": "/index.html"
+        "function": "nextjs"
       }
     ]
+  },
+  "functions": {
+    "source": "functions"
   },
   "emulators": {
     "auth": {
