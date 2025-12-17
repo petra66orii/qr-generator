@@ -62,8 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const setupAuth = async () => {
       try {
         // Give Firebase time to initialize
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         const authInstance = auth();
         if (!authInstance) {
           console.warn("Firebase auth not available");
@@ -76,6 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if (user) {
             try {
+              // Get the ID token
+              const token = await user.getIdToken();
+              // Set cookie valid for 1 hour (same as token expiry)
+              document.cookie = `session=${token}; path=/; max-age=3600; Secure; SameSite=Strict`;
               // Check if user profile exists, create if not
               let profile = await UserService.getById(user.uid);
               if (!profile) {
@@ -102,6 +106,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
           } else {
             setUserProfile(null);
+            // Clear cookie on logout
+            document.cookie = `session=; path=/; max-age=0;`;
           }
 
           setLoading(false);
